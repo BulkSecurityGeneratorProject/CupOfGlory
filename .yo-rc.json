@@ -1,0 +1,38 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "org.distribution.cupofglory",
+      "nativeLanguage": "fr"
+    },
+    "jhipsterVersion": "5.8.2",
+    "applicationType": "monolith",
+    "baseName": "CupOfGlory",
+    "packageName": "org.distribution.cupofglory",
+    "packageFolder": "org/distribution/cupofglory",
+    "serverPort": "8080",
+    "authenticationType": "jwt",
+    "cacheProvider": "ehcache",
+    "enableHibernateCache": false,
+    "websocket": "spring-websocket",
+    "databaseType": "sql",
+    "devDatabaseType": "h2Disk",
+    "prodDatabaseType": "postgresql",
+    "searchEngine": false,
+    "messageBroker": false,
+    "serviceDiscoveryType": false,
+    "buildTool": "maven",
+    "enableSwaggerCodegen": false,
+    "jwtSecretKey": "MWU2YWY1N2MxMTJmMDJiOGEwYTczNGM4YjhkZGE5NWNiZmYzYTRlNzcxNzIxM2IwOTk2ZTg3ODc5YjhlZDBjOTBhNmYzNjExOTAwODFkMjA3MDlmNTE5OWI0M2UwYjBjNWEyYzcxYTE1ZWM5YjEzMTFmNzJhMTYwMGJjYzBlOTg=",
+    "clientFramework": "react",
+    "useSass": true,
+    "clientPackageManager": "yarn",
+    "testFrameworks": [],
+    "jhiPrefix": "jhi",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [],
+    "enableTranslation": true,
+    "nativeLanguage": "fr",
+    "languages": ["fr", "en"]
+  }
+}
