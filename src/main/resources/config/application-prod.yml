@@ -31,18 +31,9 @@ spring:
         prepStmtCacheSize: 250
         prepStmtCacheSqlLimit: 2048
         useServerPrepStmts: true
-#        type: com.zaxxer.hikari.HikariDataSource
-#        url: jdbc:postgresql://localhost:5432/CupOfGlory
-#        username: CupOfGlory
-#        password:
-#        hikari:
-#            poolName: Hikari
-#            auto-commit: false
     jpa:
         database-platform: org.hibernate.dialect.PostgreSQL82Dialect
         database: POSTGRESQL
-#        database-platform: io.github.jhipster.domain.util.FixedPostgreSQL82Dialect
-#        database: POSTGRESQL
         show-sql: false
         properties:
             hibernate.id.new_generator_mappings: true
