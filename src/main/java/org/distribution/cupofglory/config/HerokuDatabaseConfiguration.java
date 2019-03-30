@@ -40,13 +40,13 @@ public class HerokuDatabaseConfiguration {
 //        this.environment = environment;
 //        this.propertyResolver = new RelaxedPropertyResolver(environment, "spring.datasource.");
 //    }
-
-    @Bean
-    public DataSource dataSource() {
-        HikariConfig config = new HikariConfig();
-        config.setJdbcUrl(dbUrl);
-        return new HikariDataSource(config);
-    }
+//
+//    @Bean
+//    public DataSource dataSource() {
+//        HikariConfig config = new HikariConfig();
+//        config.setJdbcUrl(dbUrl);
+//        return new HikariDataSource(config);
+//    }
 
 //    @Bean
 //    public DataSource dataSource() {
