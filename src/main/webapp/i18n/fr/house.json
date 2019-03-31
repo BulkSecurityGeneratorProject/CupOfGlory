@@ -1,0 +1,24 @@
+{
+  "cupOfGloryApp": {
+    "house": {
+      "home": {
+        "title": "Houses",
+        "createLabel": "Créer un nouveau House",
+        "createOrEditLabel": "Créer ou éditer un House"
+      },
+      "created": "Un nouveau House a été créé avec l'identifiant {{ param }}",
+      "updated": "Le House avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le House avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le House {{ id }} ?"
+      },
+      "detail": {
+        "title": "House"
+      },
+      "name": "Name",
+      "color": "Color",
+      "score": "Score",
+      "school": "School"
+    }
+  }
+}
