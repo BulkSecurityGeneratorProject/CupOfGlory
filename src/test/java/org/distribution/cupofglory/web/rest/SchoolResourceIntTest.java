@@ -1,18 +1,22 @@
 package org.distribution.cupofglory.web.rest;
 
 import org.distribution.cupofglory.CupOfGloryApp;
-
+import org.distribution.cupofglory.domain.Authority;
 import org.distribution.cupofglory.domain.School;
 import org.distribution.cupofglory.domain.User;
 import org.distribution.cupofglory.repository.SchoolRepository;
+import org.distribution.cupofglory.repository.UserRepository;
+import org.distribution.cupofglory.security.AuthoritiesConstants;
 import org.distribution.cupofglory.service.SchoolService;
+import org.distribution.cupofglory.service.UserService;
 import org.distribution.cupofglory.service.dto.SchoolDTO;
+import org.distribution.cupofglory.service.impl.SchoolServiceImpl;
 import org.distribution.cupofglory.service.mapper.SchoolMapper;
 import org.distribution.cupofglory.web.rest.errors.ExceptionTranslator;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,12 +30,15 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
-
-import static org.distribution.cupofglory.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.distribution.cupofglory.web.rest.TestUtil.createFormattingConversionService;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -75,6 +82,12 @@ public class SchoolResourceIntTest {
 
     private School school;
 
+    @Mock
+    private UserService mockUserService;
+
+    @Autowired
+    private UserRepository userRepository;
+
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
@@ -89,7 +102,7 @@ public class SchoolResourceIntTest {
 
     /**
      * Create an entity for this test.
-     *
+     * <p>
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
@@ -111,7 +124,7 @@ public class SchoolResourceIntTest {
 
     @Test
     @Transactional
-    public void createSchool() throws Exception {
+    public void createSchoolWithoutDirector() throws Exception {
         int databaseSizeBeforeCreate = schoolRepository.findAll().size();
 
         // Create the School
@@ -126,6 +139,58 @@ public class SchoolResourceIntTest {
         assertThat(schoolList).hasSize(databaseSizeBeforeCreate + 1);
         School testSchool = schoolList.get(schoolList.size() - 1);
         assertThat(testSchool.getName()).isEqualTo(DEFAULT_NAME);
+    }
+
+    @Test
+    @Transactional
+    public void createSchoolWithDirector() throws Exception {
+
+        final SchoolService schoolService = new SchoolServiceImpl(schoolRepository, schoolMapper, mockUserService);
+
+        final SchoolResource schoolResource = new SchoolResource(schoolService);
+        this.restSchoolMockMvc = MockMvcBuilders.standaloneSetup(schoolResource)
+            .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setControllerAdvice(exceptionTranslator)
+            .setConversionService(createFormattingConversionService())
+            .setMessageConverters(jacksonMessageConverter)
+            .setValidator(validator).build();
+
+        int databaseSizeBeforeCreate = schoolRepository.findAll().size();
+
+        Set<Authority> authorities = new HashSet<>();
+        Authority authority = new Authority();
+        authority.setName(AuthoritiesConstants.ADMIN);
+        authorities.add(authority);
+
+
+        User user = new User();
+        user.setLogin("test");
+        user.setFirstName("john");
+        user.setLastName("doe");
+        user.setEmail("john.doe@jhipster.com");
+        user.setImageUrl("http://placehold.it/50x50");
+        user.setLangKey("en");
+        user.setAuthorities(authorities);
+        user.setPassword("passwordpasswordpasswordpasswordpasswordpasswordpasswordpass");
+        when(mockUserService.getUserWithAuthorities()).thenReturn(Optional.of(user));
+
+        this.userRepository.saveAndFlush(user);
+
+        // Create the School
+        SchoolDTO schoolDTO = schoolMapper.toDto(school);
+        restSchoolMockMvc.perform(post("/api/schools")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(schoolDTO)))
+            .andExpect(status().isCreated());
+
+        // Validate the School in the database
+        List<School> schoolList = schoolRepository.findAll();
+        assertThat(schoolList).hasSize(databaseSizeBeforeCreate + 1);
+        School testSchool = schoolList.get(schoolList.size() - 1);
+        assertThat(testSchool.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testSchool.getDirector()).isNotNull();
+        assertThat(testSchool.getDirector().getId()).isEqualTo(
+            userRepository.findOneByLogin(user.getLogin()).get().getId());
     }
 
     @Test
@@ -180,7 +245,7 @@ public class SchoolResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(school.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())));
     }
-    
+
     @Test
     @Transactional
     public void getSchool() throws Exception {
