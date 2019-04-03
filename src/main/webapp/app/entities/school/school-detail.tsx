@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 import { getEntity } from './school.reducer';
 import { ISchool } from 'app/shared/model/school.model';
+import { Hourglass } from 'app/_components/Hourglass/hourglass'
 // tslint:disable-next-line:no-unused-variable
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 
@@ -27,6 +28,7 @@ export class SchoolDetail extends React.Component<ISchoolDetailProps> {
           <h2>
             <Translate contentKey="cupOfGloryApp.school.detail.title">School</Translate> [<b>{schoolEntity.id}</b>]
           </h2>
+          <Hourglass/>
           <dl className="jh-entity-details">
             <dt>
               <span id="name">
