@@ -21,7 +21,7 @@ export const NavDropdown = props => (
 
 export const BrandIcon = props => (
   <div {...props} className="brand-icon">
-    <img src="content/images/logo-jhipster.png" alt="Logo" />
+    <img src="content/images/cupOfGlory-logo-40.png" alt="Logo" />
   </div>
 );
 

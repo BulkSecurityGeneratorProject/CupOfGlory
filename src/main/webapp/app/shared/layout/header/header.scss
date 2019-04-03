@@ -1,6 +1,7 @@
 $header-color: #fff;
 $header-color-secondary: #bbb;
 $header-color-hover: darken($header-color, 20%);
+$header-background: #2b2d42;
 
 /* ==========================================================================
 Developement Ribbon
@@ -38,7 +39,7 @@ Developement Ribbon
 Navbar styles
 ========================================================================== */
 .jh-navbar {
-  background-color: #353d47;
+  background-color: $header-background;
   padding: 0.2em 1em;
   .profile-image {
     margin: -10px 0px;
@@ -86,7 +87,7 @@ Navbar styles
     text-decoration: none;
   }
   .brand-icon {
-    height: 35px;
+    height: 40px;
     width: auto;
     display: inline-block;
     img {
