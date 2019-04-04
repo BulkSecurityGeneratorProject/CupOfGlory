@@ -1,8 +1,10 @@
 package org.distribution.cupofglory.service.impl;
 
+import org.distribution.cupofglory.security.SecurityUtils;
 import org.distribution.cupofglory.service.SchoolService;
 import org.distribution.cupofglory.domain.School;
 import org.distribution.cupofglory.repository.SchoolRepository;
+import org.distribution.cupofglory.service.UserService;
 import org.distribution.cupofglory.service.dto.SchoolDTO;
 import org.distribution.cupofglory.service.mapper.SchoolMapper;
 import org.slf4j.Logger;
@@ -28,9 +30,12 @@ public class SchoolServiceImpl implements SchoolService {
 
     private final SchoolMapper schoolMapper;
 
-    public SchoolServiceImpl(SchoolRepository schoolRepository, SchoolMapper schoolMapper) {
+    private final UserService userService;
+
+    public SchoolServiceImpl(SchoolRepository schoolRepository, SchoolMapper schoolMapper, UserService userService) {
         this.schoolRepository = schoolRepository;
         this.schoolMapper = schoolMapper;
+        this.userService = userService;
     }
 
     /**
@@ -42,6 +47,13 @@ public class SchoolServiceImpl implements SchoolService {
     @Override
     public SchoolDTO save(SchoolDTO schoolDTO) {
         log.debug("Request to save School : {}", schoolDTO);
+
+        this.userService.getUserWithAuthorities()
+            .ifPresent(user -> {
+                schoolDTO.setDirectorId(user.getId());
+                schoolDTO.setDirectorLogin(user.getLogin());
+            });
+
         School school = schoolMapper.toEntity(schoolDTO);
         school = schoolRepository.save(school);
         return schoolMapper.toDto(school);

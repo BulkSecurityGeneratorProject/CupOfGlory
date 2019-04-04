@@ -106,20 +106,6 @@ export class SchoolUpdate extends React.Component<ISchoolUpdateProps, ISchoolUpd
                     }}
                   />
                 </AvGroup>
-                <AvGroup>
-                  <Label for="director.login">
-                    <Translate contentKey="cupOfGloryApp.school.director">Director</Translate>
-                  </Label>
-                  <AvInput id="school-director" type="select" className="form-control" name="directorId">
-                    {users
-                      ? users.map(otherEntity => (
-                          <option value={otherEntity.id} key={otherEntity.id}>
-                            {otherEntity.login}
-                          </option>
-                        ))
-                      : null}
-                  </AvInput>
-                </AvGroup>
                 <Button tag={Link} id="cancel-save" to="/entity/school" replace color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
