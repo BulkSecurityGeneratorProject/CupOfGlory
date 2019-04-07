@@ -1,5 +1,6 @@
 package org.distribution.cupofglory.web.rest;
 import org.distribution.cupofglory.service.HouseService;
+import org.distribution.cupofglory.service.dto.HouseScoreDTO;
 import org.distribution.cupofglory.web.rest.errors.BadRequestAlertException;
 import org.distribution.cupofglory.web.rest.util.HeaderUtil;
 import org.distribution.cupofglory.service.dto.HouseDTO;
@@ -108,5 +109,14 @@ public class HouseResource {
         log.debug("REST request to delete House : {}", id);
         houseService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+
+    @PutMapping("/houses/score")
+    public ResponseEntity<Void> manageScore(@Valid @RequestBody HouseScoreDTO houseScoreDTO) {
+
+        this.houseService.manageScore(houseScoreDTO);
+        // TODO catch errors et return 403 or 500
+
+        return ResponseEntity.ok().build();
     }
 }

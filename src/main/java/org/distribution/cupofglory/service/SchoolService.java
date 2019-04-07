@@ -1,5 +1,6 @@
 package org.distribution.cupofglory.service;
 
+import org.distribution.cupofglory.domain.School;
 import org.distribution.cupofglory.service.dto.SchoolDTO;
 
 import org.springframework.data.domain.Page;
@@ -35,7 +36,7 @@ public interface SchoolService {
      * @param id the id of the entity
      * @return the entity
      */
-    Optional<SchoolDTO> findOne(Long id);
+    Optional<School> findOne(Long id);
 
     /**
      * Delete the "id" school.

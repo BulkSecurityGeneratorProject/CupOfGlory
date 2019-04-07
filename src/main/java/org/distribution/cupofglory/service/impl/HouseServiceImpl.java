@@ -1,13 +1,19 @@
 package org.distribution.cupofglory.service.impl;
 
-import org.distribution.cupofglory.service.HouseService;
 import org.distribution.cupofglory.domain.House;
+import org.distribution.cupofglory.domain.School;
 import org.distribution.cupofglory.repository.HouseRepository;
+import org.distribution.cupofglory.security.SecurityUtils;
+import org.distribution.cupofglory.service.HouseService;
+import org.distribution.cupofglory.service.SchoolService;
 import org.distribution.cupofglory.service.dto.HouseDTO;
+import org.distribution.cupofglory.service.dto.HouseScoreDTO;
+import org.distribution.cupofglory.service.exceptions.ForbiddenSchoolAccessException;
+import org.distribution.cupofglory.service.exceptions.UnknownHouseException;
+import org.distribution.cupofglory.service.exceptions.UnknownSchoolException;
 import org.distribution.cupofglory.service.mapper.HouseMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,9 +35,12 @@ public class HouseServiceImpl implements HouseService {
 
     private final HouseMapper houseMapper;
 
-    public HouseServiceImpl(HouseRepository houseRepository, HouseMapper houseMapper) {
+    private final SchoolService schoolService;
+
+    public HouseServiceImpl(HouseRepository houseRepository, HouseMapper houseMapper, SchoolService schoolService) {
         this.houseRepository = houseRepository;
         this.houseMapper = houseMapper;
+        this.schoolService = schoolService;
     }
 
     /**
@@ -86,5 +95,28 @@ public class HouseServiceImpl implements HouseService {
     public void delete(Long id) {
         log.debug("Request to delete House : {}", id);
         houseRepository.deleteById(id);
+    }
+
+    @Override
+    public void manageScore(HouseScoreDTO houseScoreDTO) throws UnknownSchoolException, ForbiddenSchoolAccessException, UnknownHouseException {
+        // TODO ajouter es messages aux exceptions et voir comment on gère pour de bons les exceptions avec le front
+
+        School school = this.schoolService.findOne(houseScoreDTO.getId())
+            .orElseThrow(UnknownSchoolException::new);
+
+        if (!school.getDirector().getLogin().equals(SecurityUtils.getCurrentUserLogin().get())) {
+            throw new ForbiddenSchoolAccessException();
+        }
+
+        boolean houseNotInSchool = school
+            .getHouses()
+            .stream()
+            .noneMatch(house -> house.getId().equals(houseScoreDTO.getId()));
+
+        if (!houseNotInSchool) {
+            throw new UnknownHouseException();
+        }
+
+        this.houseRepository.updateScore(houseScoreDTO.getId(), houseScoreDTO.getPoints());
     }
 }

@@ -82,10 +82,9 @@ public class SchoolServiceImpl implements SchoolService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Optional<SchoolDTO> findOne(Long id) {
+    public Optional<School> findOne(Long id) {
         log.debug("Request to get School : {}", id);
-        return schoolRepository.findById(id)
-            .map(schoolMapper::toDto);
+        return schoolRepository.findById(id);
     }
 
     /**

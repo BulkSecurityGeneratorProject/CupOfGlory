@@ -1,5 +1,7 @@
 package org.distribution.cupofglory.web.rest;
+import org.distribution.cupofglory.domain.School;
 import org.distribution.cupofglory.service.SchoolService;
+import org.distribution.cupofglory.service.mapper.SchoolMapper;
 import org.distribution.cupofglory.web.rest.errors.BadRequestAlertException;
 import org.distribution.cupofglory.web.rest.util.HeaderUtil;
 import org.distribution.cupofglory.web.rest.util.PaginationUtil;
@@ -34,8 +36,11 @@ public class SchoolResource {
 
     private final SchoolService schoolService;
 
-    public SchoolResource(SchoolService schoolService) {
+    private final SchoolMapper schoolMapper;
+
+    public SchoolResource(SchoolService schoolService, SchoolMapper schoolMapper) {
         this.schoolService = schoolService;
+        this.schoolMapper = schoolMapper;
     }
 
     /**
@@ -101,8 +106,8 @@ public class SchoolResource {
     @GetMapping("/schools/{id}")
     public ResponseEntity<SchoolDTO> getSchool(@PathVariable Long id) {
         log.debug("REST request to get School : {}", id);
-        Optional<SchoolDTO> schoolDTO = schoolService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(schoolDTO);
+        Optional<School> school = schoolService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(school.map(schoolMapper::toDto));
     }
 
     /**
