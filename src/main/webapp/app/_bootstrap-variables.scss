@@ -15,25 +15,72 @@ $enable-hover-media-query: false;
 $enable-grid-classes: true;
 $enable-print-styles: true;
 
-// Components:
-// Define common padding and border radius sizes and more.
-
-$border-radius: 0.15rem;
-$border-radius-lg: 0.125rem;
-$border-radius-sm: 0.1rem;
-
-// Body:
-// Settings for the `<body>` element.
-
-$body-bg: #e4e5e6;
+// Color system
 
 /* Themes color 
   https://coolors.co/c0203d-ffc857-7ac74f-6610f2-2b2d42
 */
 
-$primary: #6610f2;
-$secondary: #2b2d42;
+$white:    #fff !default;
+// $gray-100: #f8f9fa !default;
+// $gray-200: #e9ecef !default;
+// $gray-300: #dee2e6 !default;
+// $gray-400: #ced4da !default;
+// $gray-500: #adb5bd !default;
+// $gray-600: #6c757d !default;
+// $gray-700: #495057 !default;
+// $gray-800: #343a40 !default;
+// $gray-900: #212529 !default;
+$black:    #000 !default;
 
-$green: #7ac74f;
-$red: #c0203d;
-$yellow: #ffc857;
+$blue:    #2b2d42 !default;
+$indigo:  #6610f2 !default;
+// $purple:  #6f42c1 !default;
+// $pink:    #e83e8c !default;
+$red:     #c0203d !default;
+// $orange:  #fd7e14 !default;
+$yellow:  #ffc857 !default;
+$green:   #7ac74f !default;
+// $teal:    #20c997 !default;
+// $cyan:    #17a2b8 !default;
+
+$primary: $blue;
+$secondary: $indigo;
+// $success:       $green !default;
+// $info:          $cyan !default;
+// $warning:       $yellow !default;
+// $danger:        $red !default;
+// $light:         $gray-100 !default;
+// $dark:          $gray-800 !default;
+
+// Spacing
+//
+
+$spacer: 15px !default;
+
+// Body
+//
+// Settings for the `<body>` element.
+$body-bg: #e4e5e6;
+
+// Typography
+//
+// Font, line-height, and color for body text, headings, and more.
+
+
+$font-size-base: 16px !default;
+$font-size-large: 1.125em !default; // ~18px
+$font-size-small: 0.875em !default; // ~14px
+
+$h1-font-size:                2em !default; // ~32px
+$h2-font-size:                1.875em !default; // ~30px
+$h3-font-size:                1.25em !default; // ~20px
+$h4-font-size:                $font-size-large !default; // ~18px
+$h5-font-size:                $font-size-base !default; // ~16px
+$h6-font-size:                $font-size-small !default; // ~14px
+
+//== Components
+
+$border-radius: 0.15rem;
+$border-radius-lg: 0.125rem;
+$border-radius-sm: 0.1rem;
